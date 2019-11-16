@@ -26,4 +26,26 @@ public class Ingredients {
                 this.beans - ingredients.beans,
                 this.cups - ingredients.cups);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Ingredients that = (Ingredients) o;
+
+        if (water != that.water) return false;
+        if (milk != that.milk) return false;
+        if (beans != that.beans) return false;
+        return cups == that.cups;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = water;
+        result = 31 * result + milk;
+        result = 31 * result + beans;
+        result = 31 * result + cups;
+        return result;
+    }
 }

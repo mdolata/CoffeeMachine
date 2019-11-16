@@ -16,7 +16,7 @@ import java.util.Scanner;
 import static org.junit.Assert.*;
 
 public class BuyCommandTest {
-    private final static Ingredients INGREDIENTS = new Ingredients(10, 20, 30, 40);
+    private final static Ingredients INGREDIENTS = new Ingredients(10, 20, 30, 1);
     private static final int MONEY = 100;
 
     private CustomSystemIn source = new CustomSystemIn();
@@ -41,7 +41,7 @@ public class BuyCommandTest {
         Assert.assertEquals(0, ingredientsHolder.getWater());
         Assert.assertEquals(0, ingredientsHolder.getMilk());
         Assert.assertEquals(0, ingredientsHolder.getBeans());
-        Assert.assertEquals(39, ingredientsHolder.getCups());
+        Assert.assertEquals(0, ingredientsHolder.getCups());
         Assert.assertEquals("I have enough resources, making you a coffee!", message.getContent().orElse(""));
     }
 
@@ -59,13 +59,13 @@ public class BuyCommandTest {
         Assert.assertEquals(10, ingredientsHolder.getWater());
         Assert.assertEquals(20, ingredientsHolder.getMilk());
         Assert.assertEquals(30, ingredientsHolder.getBeans());
-        Assert.assertEquals(40, ingredientsHolder.getCups());
+        Assert.assertEquals(1, ingredientsHolder.getCups());
         Assert.assertEquals(Message.EMPTY, message);
     }
 
     @Test
     public void shouldNotSubtractsIngredientsAndAddMoneyWhenIsNotEnoughResources() {
-        IngredientsHolder ingredientsHolder = new IngredientsHolder(INGREDIENTS.remove(new Ingredients(0,0,0,40)));
+        IngredientsHolder ingredientsHolder = new IngredientsHolder(INGREDIENTS.remove(new Ingredients(0,0,0,1)));
         MoneyHolder moneyHolder = new MoneyHolder(MONEY);
         List<CoffeeTypeConfig> configs = new ArrayList<>();
         configs.add(new CoffeeTypeConfig(CoffeeType.espresso, 20, 40, 60,10));

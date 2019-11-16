@@ -28,11 +28,12 @@ public class IngredientsHolderTest {
     @Test
     public void takeIngredients() {
         CoffeeTypeConfig coffeeTypeConfig = new CoffeeTypeConfig(CoffeeType.espresso, 10, 20, 30, 40);
-        ingredientsHolder.takeIngredients(coffeeTypeConfig);
+        Ingredients actual = ingredientsHolder.takeIngredients(coffeeTypeConfig);
 
         Assert.assertEquals(INGREDIENTS.water - coffeeTypeConfig.waterNeeded, ingredientsHolder.getWater());
         Assert.assertEquals(INGREDIENTS.milk - coffeeTypeConfig.milkNeeded, ingredientsHolder.getMilk());
         Assert.assertEquals(INGREDIENTS.beans - coffeeTypeConfig.beansNeeded, ingredientsHolder.getBeans());
         Assert.assertEquals(INGREDIENTS.cups - 1, ingredientsHolder.getCups());
+        Assert.assertEquals(new Ingredients(10, 20,30,1), actual);
     }
 }

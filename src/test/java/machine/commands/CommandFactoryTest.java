@@ -32,6 +32,7 @@ public class CommandFactoryTest {
     public void getDefaultCommand() {
         Command command = CommandFactory.get("notSupported", null);
 
+        Assert.assertNotNull(command);
         Assert.assertNotEquals(BuyCommand.class, command.getClass());
         Assert.assertNotEquals(FillCommand.class, command.getClass());
         Assert.assertNotEquals(TakeCommand.class, command.getClass());
