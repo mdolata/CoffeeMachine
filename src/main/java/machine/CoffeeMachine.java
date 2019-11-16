@@ -1,7 +1,6 @@
 package machine;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class CoffeeMachine {
     private final int waterAmount;
