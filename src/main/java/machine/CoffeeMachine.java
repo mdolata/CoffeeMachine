@@ -2,7 +2,7 @@ package machine;
 
 import machine.commands.Command;
 import machine.config.CoffeeTypeConfig;
-import machine.domain.Message;
+import machine.commands.Message;
 import machine.parts.IngredientsHolder;
 import machine.parts.MoneyHolder;
 

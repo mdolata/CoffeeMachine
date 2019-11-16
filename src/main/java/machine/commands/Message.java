@@ -1,4 +1,4 @@
-package machine.domain;
+package machine.commands;
 
 import java.util.Optional;
 

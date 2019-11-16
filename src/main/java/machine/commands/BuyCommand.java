@@ -2,7 +2,6 @@ package machine.commands;
 
 import machine.config.CoffeeTypeConfig;
 import machine.domain.CoffeeType;
-import machine.domain.Message;
 import machine.parts.IngredientsHolder;
 import machine.parts.MoneyHolder;
 
@@ -58,11 +57,15 @@ public class BuyCommand implements Command {
 
         if (ingredientsHolder.getWater() < config.waterNeeded) {
             notValidHolders.add("water");
-        } else if (ingredientsHolder.getMilk() < config.milkNeeded) {
+        }
+
+        if (ingredientsHolder.getMilk() < config.milkNeeded) {
             notValidHolders.add("milk");
-        } else if (ingredientsHolder.getBeans() < config.beansNeeded) {
+        }
+        if (ingredientsHolder.getBeans() < config.beansNeeded) {
             notValidHolders.add("beans");
-        } else if (ingredientsHolder.getCups() < 1) {
+        }
+        if (ingredientsHolder.getCups() < 1) {
             notValidHolders.add("cups");
         }
 
