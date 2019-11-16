@@ -28,7 +28,8 @@ public class MainLoop {
     private static void loop(CoffeeMachine coffeeMachine) {
         Scanner scanner = new Scanner(System.in);
 
-        mainLoop: while (true) {
+        mainLoop:
+        while (true) {
             System.out.println("action!");
             String action = scanner.nextLine();
 
