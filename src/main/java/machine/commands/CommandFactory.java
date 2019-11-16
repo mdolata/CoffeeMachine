@@ -8,7 +8,7 @@ public class CommandFactory {
 
             switch (action) {
                 case "buy" : command = new BuyCommand(scanner); break;
-                case "take" : command = new TakeCommand(scanner); break;
+                case "take" : command = new TakeCommand(); break;
                 case "fill" : command = new FillCommand(scanner); break;
             }
             return command;

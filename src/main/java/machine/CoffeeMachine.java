@@ -7,23 +7,23 @@ import machine.parts.MoneyHolder;
 
 import java.util.*;
 
-public class CoffeeMachine {
+class CoffeeMachine {
     private final List<CoffeeMachineConfig> configs;
     private final IngredientsHolder ingredientsHolder;
     private final MoneyHolder moneyHolder;
 
-    public CoffeeMachine(IngredientsHolder ingredientsHolder, MoneyHolder moneyHolder, List<CoffeeMachineConfig> config) {
+    CoffeeMachine(IngredientsHolder ingredientsHolder, MoneyHolder moneyHolder, List<CoffeeMachineConfig> config) {
         this.ingredientsHolder = ingredientsHolder;
         this.moneyHolder = moneyHolder;
         this.configs = config;
     }
 
-    public void doAction(Command command) {
+    void doAction(Command command) {
 
         command.apply(moneyHolder, ingredientsHolder, configs);
     }
 
-    public String status() {
+    String status() {
         return String.format("The coffee machine has:\n" +
                         "%s of water\n" +
                         "%s of milk\n" +

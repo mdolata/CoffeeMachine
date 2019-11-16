@@ -29,7 +29,7 @@ public class MainLoop {
         Scanner scanner = new Scanner(System.in);
 
         mainLoop: while (true) {
-            System.out.println("akcja!");
+            System.out.println("action!");
             String action = scanner.nextLine();
 
             switch (action) {

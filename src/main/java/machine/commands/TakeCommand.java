@@ -5,11 +5,8 @@ import machine.parts.IngredientsHolder;
 import machine.parts.MoneyHolder;
 
 import java.util.List;
-import java.util.Scanner;
 
 public class TakeCommand implements Command {
-
-        public TakeCommand(Scanner scanner) {}
 
         @Override
         public void apply(MoneyHolder moneyHolder, IngredientsHolder ingredientsHolder, List<CoffeeMachineConfig> configs) {
