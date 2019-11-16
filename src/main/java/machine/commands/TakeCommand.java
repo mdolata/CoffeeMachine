@@ -1,6 +1,8 @@
 package machine.commands;
 
-import machine.CoffeeMachine;
+import machine.config.CoffeeMachineConfig;
+import machine.parts.IngredientsHolder;
+import machine.parts.MoneyHolder;
 
 import java.util.List;
 import java.util.Scanner;
@@ -10,7 +12,7 @@ public class TakeCommand implements Command {
         public TakeCommand(Scanner scanner) {}
 
         @Override
-        public void apply(CoffeeMachine.MoneyHolder moneyHolder, CoffeeMachine.IngredientsHolder ingredientsHolder, List<CoffeeMachine.CoffeeMachineConfig> configs) {
+        public void apply(MoneyHolder moneyHolder, IngredientsHolder ingredientsHolder, List<CoffeeMachineConfig> configs) {
             int take = moneyHolder.take();
 
             //todo print there is not fine

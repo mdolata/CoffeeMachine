@@ -1,6 +1,10 @@
 package machine;
 
 import machine.commands.CommandFactory;
+import machine.config.CoffeeMachineConfig;
+import machine.domain.CoffeeType;
+import machine.parts.IngredientsHolder;
+import machine.parts.MoneyHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,15 +12,15 @@ import java.util.Scanner;
 
 public class MainLoop {
     public static void main(String[] args) {
-        List<CoffeeMachine.CoffeeMachineConfig> configs = createCoffeeConfig();
+        List<CoffeeMachineConfig> configs = createCoffeeConfig();
         CoffeeMachine coffeeMachine = createCoffeeMachine(configs);
 
         loop(coffeeMachine);
     }
 
-    private static CoffeeMachine createCoffeeMachine(List<CoffeeMachine.CoffeeMachineConfig> configs) {
-        CoffeeMachine.IngredientsHolder ingredientsHolder = new CoffeeMachine.IngredientsHolder(400, 540, 120, 9);
-        CoffeeMachine.MoneyHolder moneyHolder = new CoffeeMachine.MoneyHolder(550);
+    private static CoffeeMachine createCoffeeMachine(List<CoffeeMachineConfig> configs) {
+        IngredientsHolder ingredientsHolder = new IngredientsHolder(400, 540, 120, 9);
+        MoneyHolder moneyHolder = new MoneyHolder(550);
 
         return new CoffeeMachine(ingredientsHolder, moneyHolder, configs);
     }
@@ -43,12 +47,12 @@ public class MainLoop {
         }
     }
 
-    private static List<CoffeeMachine.CoffeeMachineConfig> createCoffeeConfig() {
-        CoffeeMachine.CoffeeMachineConfig espresso = new CoffeeMachine.CoffeeMachineConfig(CoffeeMachine.CoffeeType.espresso, 250, 0, 16, 4);
-        CoffeeMachine.CoffeeMachineConfig latte = new CoffeeMachine.CoffeeMachineConfig(CoffeeMachine.CoffeeType.latte, 350, 75, 20, 7);
-        CoffeeMachine.CoffeeMachineConfig cappuccino = new CoffeeMachine.CoffeeMachineConfig(CoffeeMachine.CoffeeType.cappuccino, 200, 100, 12, 6);
+    private static List<CoffeeMachineConfig> createCoffeeConfig() {
+        CoffeeMachineConfig espresso = new CoffeeMachineConfig(CoffeeType.espresso, 250, 0, 16, 4);
+        CoffeeMachineConfig latte = new CoffeeMachineConfig(CoffeeType.latte, 350, 75, 20, 7);
+        CoffeeMachineConfig cappuccino = new CoffeeMachineConfig(CoffeeType.cappuccino, 200, 100, 12, 6);
 
-        List<CoffeeMachine.CoffeeMachineConfig> configs = new ArrayList<>();
+        List<CoffeeMachineConfig> configs = new ArrayList<>();
         configs.add(espresso);
         configs.add(latte);
         configs.add(cappuccino);

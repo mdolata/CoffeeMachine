@@ -1,8 +1,16 @@
 package machine.commands;
 
-import machine.CoffeeMachine;
+import machine.config.CoffeeMachineConfig;
+import machine.domain.CoffeeType;
+import machine.parts.IngredientsHolder;
+import machine.parts.MoneyHolder;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Set;
+
 
 public class BuyCommand implements Command{
         private final Scanner scanner;
@@ -12,7 +20,7 @@ public class BuyCommand implements Command{
         }
 
         @Override
-        public void apply(CoffeeMachine.MoneyHolder moneyHolder, CoffeeMachine.IngredientsHolder ingredientsHolder, List<CoffeeMachine.CoffeeMachineConfig> configs) {
+        public void apply(MoneyHolder moneyHolder, IngredientsHolder ingredientsHolder, List<CoffeeMachineConfig> configs) {
             String input = scanner.nextLine();
 
             if ("back".equals(input)) {
@@ -20,13 +28,13 @@ public class BuyCommand implements Command{
             }
             int inputCoffeeType = Integer.parseInt(input);
 
-            CoffeeMachine.CoffeeType coffeeType = Arrays.stream(CoffeeMachine.CoffeeType.values())
+            CoffeeType coffeeType = Arrays.stream(CoffeeType.values())
                     .filter(coffeeType2 -> inputCoffeeType == coffeeType2.number)
                     .findFirst()
                     .orElseThrow(RuntimeException::new);
 
 
-            CoffeeMachine.CoffeeMachineConfig theConfig = configs.stream()
+            CoffeeMachineConfig theConfig = configs.stream()
                     .filter(config -> config.coffeeType.equals(coffeeType))
                     .findFirst()
                     .get();
@@ -43,7 +51,7 @@ public class BuyCommand implements Command{
             }
         }
 
-        private Set<String> validate(CoffeeMachine.IngredientsHolder ingredientsHolder, CoffeeMachine.CoffeeMachineConfig config) {
+        private Set<String> validate(IngredientsHolder ingredientsHolder, CoffeeMachineConfig config) {
             Set<String> notValidHolders = new LinkedHashSet<>();
 
             if (ingredientsHolder.getWater() < config.waterNeeded) {
