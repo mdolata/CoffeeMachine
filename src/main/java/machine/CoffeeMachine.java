@@ -1,6 +1,7 @@
 package machine;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CoffeeMachine {
     private final int waterAmount;
@@ -29,24 +30,30 @@ public class CoffeeMachine {
         configs.add(latte);
         configs.add(cappuccino);
 
-        IngredientsHolder ingredientsHolder = new IngredientsHolder(1200, 540, 120, 9);
+        IngredientsHolder ingredientsHolder = new IngredientsHolder(400, 540, 120, 9);
         MoneyHolder moneyHolder = new MoneyHolder(550);
 
         CoffeeMachine coffeeMachine = new CoffeeMachine(ingredientsHolder, moneyHolder, configs);
 
-        String status = coffeeMachine.status();
-        System.out.println(status);
-
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("akcja!");
-        String action = scanner.nextLine();
+        mainLoop: while (true) {
+            System.out.println("akcja!");
+            String action = scanner.nextLine();
 
-        Command command = CommandFactory.get(action, scanner);
-        coffeeMachine.doAction(command);
-
-        status = coffeeMachine.status();
-        System.out.println(status);
+            switch (action) {
+                case "buy":
+                case "fill":
+                case "take":
+                    coffeeMachine.doAction(CommandFactory.get(action, scanner));
+                    break;
+                case "remaining":
+                    System.out.println(coffeeMachine.status());
+                    break;
+                case "exit":
+                    break mainLoop;
+            }
+        }
     }
 
     private void doAction(Command command) {
@@ -204,25 +211,56 @@ public class CoffeeMachine {
 
         @Override
         public void apply(MoneyHolder moneyHolder, IngredientsHolder ingredientsHolder, List<CoffeeMachineConfig> configs) {
-            int inputCoffeeType = scanner.nextInt();
+            String input = scanner.nextLine();
+
+            if ("back".equals(input)) {
+                return;
+            }
+            int inputCoffeeType = Integer.parseInt(input);
+
             CoffeeType coffeeType = Arrays.stream(CoffeeType.values())
                     .filter(coffeeType2 -> inputCoffeeType == coffeeType2.number)
                     .findFirst()
                     .orElseThrow(RuntimeException::new);
 
-            configs.stream().filter(config -> config.coffeeType.equals(coffeeType))
-                    .peek(config -> moneyHolder.put(config.cost))
-                    .peek(ingredientsHolder::getIngredients)
-                    .count();
+
+            CoffeeMachineConfig theConfig = configs.stream()
+                    .filter(config -> config.coffeeType.equals(coffeeType))
+                    .findFirst()
+                    .get();
+
+            Set<String> isValid = validate(ingredientsHolder, theConfig);
+
+            if (isValid.isEmpty()) {
+                System.out.println("I have enough resources, making you a coffee!");
+                moneyHolder.put(theConfig.cost);
+                ingredientsHolder.getIngredients(theConfig);
+            } else {
+                String notValid = String.join(", ", isValid);
+                System.out.println(String.format("Sorry, not enough %s!", notValid));
+            }
+        }
+
+        private Set<String> validate(IngredientsHolder ingredientsHolder, CoffeeMachineConfig config) {
+            Set<String> notValidHolders = new LinkedHashSet<>();
+
+            if (ingredientsHolder.water < config.waterNeeded) {
+                notValidHolders.add("water");
+            } else if (ingredientsHolder.milk < config.milkNeeded) {
+                notValidHolders.add("milk");
+            } else if (ingredientsHolder.beans < config.beansNeeded) {
+                notValidHolders.add("beans");
+            } else if (ingredientsHolder.cups < 1) {
+                notValidHolders.add("cups");
+            }
+
+            return notValidHolders;
         }
     }
 
     private static class TakeCommand implements Command {
-        private final Scanner scanner;
 
-        public TakeCommand(Scanner scanner) {
-            this.scanner = scanner;
-        }
+        public TakeCommand(Scanner scanner) {}
 
         @Override
         public void apply(MoneyHolder moneyHolder, IngredientsHolder ingredientsHolder, List<CoffeeMachineConfig> configs) {
@@ -242,10 +280,10 @@ public class CoffeeMachine {
 
         @Override
         public void apply(MoneyHolder moneyHolder, IngredientsHolder ingredientsHolder, List<CoffeeMachineConfig> configs) {
-            int waterAdd = scanner.nextInt();
-            int milkAdd = scanner.nextInt();
-            int beansAdd = scanner.nextInt();
-            int cupsAdd = scanner.nextInt();
+            int waterAdd = Integer.parseInt(scanner.nextLine());
+            int milkAdd = Integer.parseInt(scanner.nextLine());
+            int beansAdd = Integer.parseInt(scanner.nextLine());
+            int cupsAdd = Integer.parseInt(scanner.nextLine());
 
             ingredientsHolder.fillUp(waterAdd,milkAdd, beansAdd,cupsAdd);
         }
