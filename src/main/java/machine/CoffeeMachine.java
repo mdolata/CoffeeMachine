@@ -3,9 +3,6 @@ package machine;
 import java.util.*;
 
 public class CoffeeMachine {
-    private final int waterAmount;
-    private final int milkAmount;
-    private final int beanAmount;
     private final List<CoffeeMachineConfig> configs;
     private final IngredientsHolder ingredientsHolder;
     private final MoneyHolder moneyHolder;
@@ -13,9 +10,6 @@ public class CoffeeMachine {
     public CoffeeMachine(IngredientsHolder ingredientsHolder, MoneyHolder moneyHolder, List<CoffeeMachineConfig> config) {
         this.ingredientsHolder = ingredientsHolder;
         this.moneyHolder = moneyHolder;
-        this.waterAmount = ingredientsHolder.water;
-        this.milkAmount = ingredientsHolder.milk;
-        this.beanAmount = ingredientsHolder.beans;
         this.configs = config;
     }
 
@@ -67,33 +61,6 @@ public class CoffeeMachine {
                 "%s of disposable cups\n" +
                 "%s of money", ingredientsHolder.water,ingredientsHolder.milk, ingredientsHolder.beans,
                 ingredientsHolder.cups, moneyHolder.money);
-    }
-
-    private int howManyCoffeesCanBeMake() {
-        CoffeeMachineConfig config = configs.get(0);
-        int water = maximumCoffeesOf(waterAmount, config.waterNeeded);
-        int milk = maximumCoffeesOf(milkAmount, config.milkNeeded);
-        int beans = maximumCoffeesOf(beanAmount, config.beansNeeded);
-
-        return min(water,milk, beans);
-    }
-
-    private int min(int a, int b, int c) {
-        return Integer.min(a, Integer.min(b, c));
-    }
-
-    private int maximumCoffeesOf(int amountInCoffeeMachine, int coffeeNeeds) {
-        return amountInCoffeeMachine / coffeeNeeds;
-    }
-
-    private String makeCoffee() {
-        return "Starting to make a coffee" + "\n" +
-        "Grinding coffee beans" + "\n" +
-        "Boiling water" +  "\n" +
-        "Mixing boiled water with crushed coffee beans" +  "\n" +
-        "Pouring coffee into the cup" +  "\n" +
-        "Pouring some milk into the cup" + "\n" +
-        "Coffee is ready!";
     }
 
     private static class Ingredients {
@@ -155,7 +122,7 @@ public class CoffeeMachine {
         }
     }
 
-    private static enum CoffeeType {
+    private enum CoffeeType {
         espresso(1), latte(2), cappuccino(3);
 
         private final int number;
@@ -183,8 +150,8 @@ public class CoffeeMachine {
         }
     }
 
-    private static interface Command {
-        public void apply(MoneyHolder moneyHolder, IngredientsHolder ingredientsHolder, List<CoffeeMachineConfig> configs);
+    private interface Command {
+        void apply(MoneyHolder moneyHolder, IngredientsHolder ingredientsHolder, List<CoffeeMachineConfig> configs);
     }
 
     private static class CommandFactory {
@@ -198,8 +165,6 @@ public class CoffeeMachine {
             }
             return command;
         }
-
-
     }
     private static class BuyCommand implements Command{
         private final Scanner scanner;
