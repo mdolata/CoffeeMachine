@@ -1,26 +1,26 @@
 package machine;
 
 import machine.commands.Command;
-import machine.config.CoffeeMachineConfig;
+import machine.config.CoffeeTypeConfig;
+import machine.domain.Message;
 import machine.parts.IngredientsHolder;
 import machine.parts.MoneyHolder;
 
 import java.util.*;
 
 class CoffeeMachine {
-    private final List<CoffeeMachineConfig> configs;
+    private final List<CoffeeTypeConfig> configs;
     private final IngredientsHolder ingredientsHolder;
     private final MoneyHolder moneyHolder;
 
-    CoffeeMachine(IngredientsHolder ingredientsHolder, MoneyHolder moneyHolder, List<CoffeeMachineConfig> config) {
+    CoffeeMachine(IngredientsHolder ingredientsHolder, MoneyHolder moneyHolder, List<CoffeeTypeConfig> config) {
         this.ingredientsHolder = ingredientsHolder;
         this.moneyHolder = moneyHolder;
         this.configs = config;
     }
 
-    void doAction(Command command) {
-
-        command.apply(moneyHolder, ingredientsHolder, configs);
+    Message doAction(Command command) {
+        return command.apply(moneyHolder, ingredientsHolder, configs);
     }
 
     String status() {

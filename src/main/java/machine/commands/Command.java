@@ -1,12 +1,14 @@
 package machine.commands;
 
-import machine.config.CoffeeMachineConfig;
+import machine.config.CoffeeTypeConfig;
+import machine.domain.Message;
 import machine.parts.IngredientsHolder;
 import machine.parts.MoneyHolder;
 
 import java.util.List;
 
+@FunctionalInterface
 public interface Command {
-    void apply(MoneyHolder moneyHolder, IngredientsHolder ingredientsHolder, List<CoffeeMachineConfig> configs);
+    Message apply(MoneyHolder moneyHolder, IngredientsHolder ingredientsHolder, List<CoffeeTypeConfig> configs);
 
 }

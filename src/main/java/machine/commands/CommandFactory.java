@@ -1,5 +1,11 @@
 package machine.commands;
 
+import machine.config.CoffeeTypeConfig;
+import machine.domain.Message;
+import machine.parts.IngredientsHolder;
+import machine.parts.MoneyHolder;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class CommandFactory {
@@ -16,6 +22,7 @@ public class CommandFactory {
             case "fill":
                 command = new FillCommand(scanner);
                 break;
+            default: command = (MoneyHolder moneyHolder, IngredientsHolder ingredientsHolder, List<CoffeeTypeConfig> configs) -> Message.EMPTY;
         }
         return command;
     }

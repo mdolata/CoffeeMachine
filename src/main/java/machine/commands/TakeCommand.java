@@ -1,6 +1,7 @@
 package machine.commands;
 
-import machine.config.CoffeeMachineConfig;
+import machine.config.CoffeeTypeConfig;
+import machine.domain.Message;
 import machine.parts.IngredientsHolder;
 import machine.parts.MoneyHolder;
 
@@ -9,10 +10,9 @@ import java.util.List;
 public class TakeCommand implements Command {
 
     @Override
-    public void apply(MoneyHolder moneyHolder, IngredientsHolder ingredientsHolder, List<CoffeeMachineConfig> configs) {
+    public Message apply(MoneyHolder moneyHolder, IngredientsHolder ingredientsHolder, List<CoffeeTypeConfig> configs) {
         int take = moneyHolder.take();
 
-        //todo print there is not fine
-        System.out.println(String.format("I gave you $%s", take));
+        return Message.create(String.format("I gave you $%s", take));
     }
 }

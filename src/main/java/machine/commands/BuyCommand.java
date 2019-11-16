@@ -1,7 +1,8 @@
 package machine.commands;
 
-import machine.config.CoffeeMachineConfig;
+import machine.config.CoffeeTypeConfig;
 import machine.domain.CoffeeType;
+import machine.domain.Message;
 import machine.parts.IngredientsHolder;
 import machine.parts.MoneyHolder;
 
@@ -20,11 +21,11 @@ public class BuyCommand implements Command {
     }
 
     @Override
-    public void apply(MoneyHolder moneyHolder, IngredientsHolder ingredientsHolder, List<CoffeeMachineConfig> configs) {
+    public Message apply(MoneyHolder moneyHolder, IngredientsHolder ingredientsHolder, List<CoffeeTypeConfig> configs) {
         String input = scanner.nextLine();
 
         if ("back".equals(input)) {
-            return;
+            return Message.EMPTY;
         }
         int inputCoffeeType = Integer.parseInt(input);
 
@@ -34,24 +35,25 @@ public class BuyCommand implements Command {
                 .orElseThrow(RuntimeException::new);
 
 
-        CoffeeMachineConfig theConfig = configs.stream()
+        CoffeeTypeConfig theConfig = configs.stream()
                 .filter(config -> config.coffeeType.equals(coffeeType))
                 .findFirst()
                 .get();
 
         Set<String> isValid = validate(ingredientsHolder, theConfig);
 
-        if (isValid.isEmpty()) {
-            System.out.println("I have enough resources, making you a coffee!");
-            moneyHolder.put(theConfig.cost);
-            ingredientsHolder.getIngredients(theConfig);
-        } else {
+        if (!isValid.isEmpty()) {
             String notValid = String.join(", ", isValid);
-            System.out.println(String.format("Sorry, not enough %s!", notValid));
+            return Message.create(String.format("Sorry, not enough %s!", notValid));
         }
+
+        moneyHolder.put(theConfig.cost);
+        ingredientsHolder.takeIngredients(theConfig);
+        return Message.create("I have enough resources, making you a coffee!");
+
     }
 
-    private Set<String> validate(IngredientsHolder ingredientsHolder, CoffeeMachineConfig config) {
+    private Set<String> validate(IngredientsHolder ingredientsHolder, CoffeeTypeConfig config) {
         Set<String> notValidHolders = new LinkedHashSet<>();
 
         if (ingredientsHolder.getWater() < config.waterNeeded) {

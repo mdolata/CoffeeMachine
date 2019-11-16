@@ -1,49 +1,39 @@
 package machine.parts;
 
-import machine.config.CoffeeMachineConfig;
+import machine.config.CoffeeTypeConfig;
 import machine.domain.Ingredients;
 
 public class IngredientsHolder {
-    private int water;
-    private int milk;
-    private int beans;
-    private int cups;
+    private Ingredients ingredients;
 
-    public IngredientsHolder(int water, int milk, int beans, int cups) {
-        this.water = water;
-        this.milk = milk;
-        this.beans = beans;
-        this.cups = cups;
+    public IngredientsHolder(Ingredients ingredients) {
+        this.ingredients = ingredients;
     }
 
-    public void fillUp(int water, int milk, int beans, int cups) {
-        this.water += water;
-        this.milk += milk;
-        this.beans += beans;
-        this.cups += cups;
+    public void fillUp(Ingredients ingredients) {
+        this.ingredients = this.ingredients.fillWith(ingredients);
     }
 
-    public Ingredients getIngredients(CoffeeMachineConfig config) {
-        this.water -= config.waterNeeded;
-        this.milk -= config.milkNeeded;
-        this.beans -= config.beansNeeded;
-        this.cups--;
-        return new Ingredients(config.waterNeeded, config.milkNeeded, config.beansNeeded, 1);
+    public Ingredients takeIngredients(CoffeeTypeConfig config) {
+        Ingredients ingredients = new Ingredients(config.waterNeeded, config.milkNeeded, config.beansNeeded, 1);
+        this.ingredients = this.ingredients.remove(ingredients);
+
+        return ingredients;
     }
 
     public int getWater() {
-        return water;
+        return this.ingredients.water;
     }
 
     public int getMilk() {
-        return milk;
+        return this.ingredients.milk;
     }
 
     public int getBeans() {
-        return beans;
+        return this.ingredients.beans;
     }
 
     public int getCups() {
-        return cups;
+        return this.ingredients.cups;
     }
 }
